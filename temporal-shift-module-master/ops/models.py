@@ -8,6 +8,7 @@ from torch import nn
 from ops.basic_ops import ConsensusModule
 from ops.transforms import *
 from torch.nn.init import normal_, constant_
+from efficientnet_pytorch import EfficientNet
 
 
 class TSN(nn.Module):
@@ -114,6 +115,26 @@ class TSN(nn.Module):
                 make_non_local(self.base_model, self.num_segments)
 
             self.base_model.last_layer_name = 'fc'
+            self.input_size = 224
+            self.input_mean = [0.485, 0.456, 0.406]
+            self.input_std = [0.229, 0.224, 0.225]
+
+            self.base_model.avgpool = nn.AdaptiveAvgPool2d(1)
+
+            if self.modality == 'Flow':
+                self.input_mean = [0.5]
+                self.input_std = [np.mean(self.input_std)]
+            elif self.modality == 'RGBDiff':
+                self.input_mean = [0.485, 0.456, 0.406] + [0] * 3 * self.new_length
+                self.input_std = self.input_std + [np.mean(self.input_std) * 2] * 3 * self.new_length
+
+        elif 'efficientnet' in base_model:
+            if self.pretrain == 'imagenet':
+                self.base_model = EfficientNet.from_pretrained(base_model)
+            else:
+                self.base_model = EfficientNet.from_name(base_model)
+                
+            self.base_model.last_layer_name = '_fc'
             self.input_size = 224
             self.input_mean = [0.485, 0.456, 0.406]
             self.input_std = [0.229, 0.224, 0.225]
