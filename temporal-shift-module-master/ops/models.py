@@ -138,9 +138,15 @@ class TSN(nn.Module):
             self.input_size = 224
             self.input_mean = [0.485, 0.456, 0.406]
             self.input_std = [0.229, 0.224, 0.225]
-
             self.base_model.avgpool = nn.AdaptiveAvgPool2d(1)
 
+            if self.is_shift:
+                from ops.temporal_shift import TemporalShift
+                from efficientnet_pytorch.model import MBConvBlock
+                for m in self.base_model._blocks:
+                    if isinstance(m, MBConvBlock):
+                        m._depthwise_conv = TemporalShift(m._depthwise_conv, n_segment=self.num_segments, n_div=self.shift_div)
+            
             if self.modality == 'Flow':
                 self.input_mean = [0.5]
                 self.input_std = [np.mean(self.input_std)]
@@ -162,8 +168,8 @@ class TSN(nn.Module):
                 from ops.temporal_shift import TemporalShift
                 for m in self.base_model.modules():
                     if isinstance(m, InvertedResidual) and len(m.conv) == 8 and m.use_res_connect:
-                        if self.print_spec:
-                            print('Adding temporal shift... {}'.format(m.use_res_connect))
+                        #if self.print_spec:
+                        #    print('Adding temporal shift... {}'.format(m.use_res_connect))
                         m.conv[0] = TemporalShift(m.conv[0], n_segment=self.num_segments, n_div=self.shift_div)
             if self.modality == 'Flow':
                 self.input_mean = [0.5]
