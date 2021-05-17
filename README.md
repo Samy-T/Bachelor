@@ -7,6 +7,7 @@ Resolution of dataset in pixels (width x height):
 - Something-Something-V1: 176 x 100
 - Something-Something-V2: 178 x 100
 - UCF101: 342 x 256
+- HMDB51: 320 x 240
 
 Backbones:
 ResNet: ResNet-18, ResNet-34, ResNet-50, ResNet-101
