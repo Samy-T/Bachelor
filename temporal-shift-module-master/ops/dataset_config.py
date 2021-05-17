@@ -26,16 +26,16 @@ def return_ucf101(modality):
 
 
 def return_hmdb51(modality):
-    filename_categories = 51
+    filename_categories = 'HMDB51/category.txt'
     if modality == 'RGB':
-        root_data = ROOT_DATASET # + 'HMDB51/images'
-        filename_imglist_train = 'HMDB51/splits/hmdb51_rgb_train_split_1.txt'
-        filename_imglist_val = 'HMDB51/splits/hmdb51_rgb_val_split_1.txt'
+        root_data = ROOT_DATASET + 'HMDB51/hmdb51_frames'
+        filename_imglist_train = 'HMDB51/hmdb51_rgb_train_split_1.txt'
+        filename_imglist_val = 'HMDB51/hmdb51_rgb_val_split_1.txt'
         prefix = 'img_{:05d}.jpg'
     elif modality == 'Flow':
-        root_data = ROOT_DATASET + 'HMDB51/images'
-        filename_imglist_train = 'HMDB51/splits/hmdb51_flow_train_split_1.txt'
-        filename_imglist_val = 'HMDB51/splits/hmdb51_flow_val_split_1.txt'
+        root_data = ROOT_DATASET + 'HMDB51/hmdb51_frames'
+        filename_imglist_train = 'HMDB51/hmdb51_rgb_train_split_1.txt'
+        filename_imglist_val = 'HMDB51/hmdb51_rgb_val_split_1.txt'
         prefix = 'flow_{}_{:05d}.jpg'
     else:
         raise NotImplementedError('no such modality:' + modality)
