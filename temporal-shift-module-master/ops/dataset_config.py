@@ -5,16 +5,16 @@
 
 import os
 
-ROOT_DATASET = '/mnt/Bachelor/temporal-shift-module-master/ssd/video/'  # '/data/jilin/'
+ROOT_DATASET = '/mnt/Bachelor/temporal-shift-module-master/ssd/video/'
 
 
 def return_ucf101(modality):
-    filename_categories = 'UCF101/labels/classInd.txt'
+    filename_categories = 'UCF101/category.txt'
     if modality == 'RGB':
-        root_data = ROOT_DATASET # + 'UCF101/jpg'
-        filename_imglist_train = 'UCF101/file_list/ucf101_rgb_train_split_1.txt'
-        filename_imglist_val = 'UCF101/file_list/ucf101_rgb_val_split_1.txt'
-        prefix = 'img_{:05d}.jpg'
+        root_data = ROOT_DATASET + 'UCF101/jpegs_256'
+        filename_imglist_train = 'UCF101/ucf101_train_split_3_rawframes.txt'
+        filename_imglist_val = 'UCF101/ucf101_val_split_3_rawframes.txt'
+        prefix = 'frame{:06d}.jpg'
     elif modality == 'Flow':
         root_data = ROOT_DATASET + 'UCF101/jpg'
         filename_imglist_train = 'UCF101/file_list/ucf101_flow_train_split_1.txt'
