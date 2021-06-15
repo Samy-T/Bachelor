@@ -10,9 +10,9 @@ import torch.nn as nn
 from collections import OrderedDict
 import utils
 from ts import make_temporal_shift
-#from efficientnet_pytorch import EfficientNet
-#from ts import TemporalShift
-#from efficientnet_pytorch.model import MBConvBlock
+from efficientnet_pytorch import EfficientNet
+from ts import TemporalShift
+from efficientnet_pytorch.model import MBConvBlock
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', help='path to input video')
@@ -29,19 +29,20 @@ print(f"Number of frames to consider for each prediction: {args['number_of_frame
 # ResNet
 model = torchvision.models.resnet34(pretrained=True, progress=True)
 make_temporal_shift(model, n_segment=args['number_of_frames'], n_div=args['number_of_frames'], place='blockres', temporal_pool=False)
-model.fc = nn.Linear(512, num_classes) # Here you should change output corresponding to the number of action classes: e.g. ResNet-50: nn.Linear(2048, num_classes)
+model.fc = nn.Linear(512, num_classes) # Here you should change output corresponding to the number of action classes and NN architecture used: e.g. ResNet-50: nn.Linear(2048, num_classes)
 
 # Load your pretrained model
-checkpoint = torch.load('ResNet34_Jester.pth.tar')
+checkpoint = torch.load('models/ResNet34_Jester.pth.tar')
 checkpoint = checkpoint['state_dict']
 
 # EfficientNetB4
-""" model = EfficientNet.from_pretrained('efficientnet-b4', num_classes) # Here you should change output corresponding to the number of action classes
+""" model = EfficientNet.from_pretrained('efficientnet-b4') # Here you should change output corresponding to the number of action classes
 for m in model._blocks:
     if isinstance(m, MBConvBlock):
-        m._depthwise_conv = TemporalShift(m._depthwise_conv, n_segment=args['frames'], n_div=args['frames'])
+        m._depthwise_conv = TemporalShift(m._depthwise_conv, n_segment=args['number_of_frames'], n_div=args['number_of_frames'])
+model._fc = nn.Linear(1792, num_classes)
 # Load your pretrained model
-checkpoint = torch.load('EfficientNet_Jester.pth.tar')
+checkpoint = torch.load('models/EfficientNet_Jester.pth.tar')
 checkpoint = checkpoint['state_dict'] """
 
 base_dict = {'.'.join(k.split('.')[1:]): v for k, v in list(checkpoint.items())}

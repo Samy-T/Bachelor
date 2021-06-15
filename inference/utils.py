@@ -8,6 +8,6 @@ transform = A.Compose([
                 always_apply=True)
 ])
 
-with open('category.txt', 'r') as f:
+with open('categories/category.txt', 'r') as f:
         class_names = f.readlines()
         f.close()
