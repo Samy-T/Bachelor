@@ -19,5 +19,5 @@ You can train on GPU or TPU*.
 _____________________________________________________________________________________________
 
 *To train on TPU you should remove ".cuda()" from:
-- main.py (lines: 74, 174, 239, 297)
-- test_models.py (line 198)
+- main.py (lines: 66, 162, 227, 285)
+- test_models.py (line 188)
