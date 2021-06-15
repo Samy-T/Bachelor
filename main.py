@@ -6,13 +6,13 @@ import torch.backends.cudnn as cudnn
 import torch.optim
 from torch.nn.utils import clip_grad_norm_
 
-from ops.dataset import TSNDataSet
-from ops.models import TSN
-from ops.transforms import *
-from opts import parser
-from ops import dataset_config
-from ops.utils import AverageMeter, accuracy
-from ops.temporal_shift import make_temporal_pool
+from scripts.dataset import TSNDataSet
+from scripts.models import TSN
+from scripts.transforms import *
+from args import parser
+from scripts import dataset_config
+from scripts.utils import AverageMeter, accuracy
+from scripts.temporal_shift import make_temporal_pool
 
 from tensorboardX import SummaryWriter
 

@@ -1,7 +1,7 @@
 from torch import nn
 
-from ops.basic_ops import ConsensusModule
-from ops.transforms import *
+from scripts.basic_ops import ConsensusModule
+from scripts.transforms import *
 from torch.nn.init import normal_, constant_
 from efficientnet_pytorch import EfficientNet
 
@@ -90,7 +90,7 @@ class TSN(nn.Module):
             self.base_model = getattr(torchvision.models, base_model)(True if self.pretrain == 'imagenet' else False)
             if self.is_shift:
                 print('Adding temporal shift...')
-                from ops.temporal_shift import make_temporal_shift
+                from scripts.temporal_shift import make_temporal_shift
                 make_temporal_shift(self.base_model, self.num_segments,
                                     n_div=self.shift_div, place=self.shift_place, temporal_pool=self.temporal_pool)
 
@@ -105,7 +105,7 @@ class TSN(nn.Module):
             self.base_model = getattr(torchvision.models, base_model)(True if self.pretrain == 'imagenet' else False)
             if self.is_shift:
                 print('Adding temporal shift...')
-                from ops.temporal_shift import make_temporal_shift
+                from scripts.temporal_shift import make_temporal_shift
                 make_temporal_shift(self.base_model, self.num_segments,
                                     n_div=self.shift_div, place=self.shift_place, temporal_pool=self.temporal_pool)              
 
@@ -129,7 +129,7 @@ class TSN(nn.Module):
             self.base_model.avgpool = nn.AdaptiveAvgPool2d(1)
 
             if self.is_shift:
-                from ops.temporal_shift import TemporalShift
+                from scripts.temporal_shift import TemporalShift
                 from efficientnet_pytorch.model import MBConvBlock
                 for m in self.base_model._blocks:
                     if isinstance(m, MBConvBlock):
@@ -153,7 +153,7 @@ class TSN(nn.Module):
 
             self.base_model.avgpool = nn.AdaptiveAvgPool2d(1)
             if self.is_shift:
-                from ops.temporal_shift import TemporalShift
+                from scripts.temporal_shift import TemporalShift
                 for m in self.base_model.modules():
                     if isinstance(m, MBConv):
                         m.conv[0] = TemporalShift(m.conv[0], n_segment=self.num_segments, n_div=self.shift_div)
@@ -169,7 +169,7 @@ class TSN(nn.Module):
 
             self.base_model.avgpool = nn.AdaptiveAvgPool2d(1)
             if self.is_shift:
-                from ops.temporal_shift import TemporalShift
+                from scripts.temporal_shift import TemporalShift
                 for m in self.base_model.modules():
                     if isinstance(m, InvertedResidual) and len(m.conv) == 8 and m.use_res_connect:
                         print('Adding temporal shift... {}'.format(m.use_res_connect))

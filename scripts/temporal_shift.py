@@ -1,6 +1,3 @@
-# Temporal Shift Module
-# Code from
-# https://github.com/mit-han-lab/temporal-shift-module/blob/master/ops/temporal_shift.py
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

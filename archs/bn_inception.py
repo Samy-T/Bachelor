@@ -93,7 +93,7 @@ class BNInception(nn.Module):
 
     def _temporal_forward_wrap(self, layer_func, index):
         if hasattr(self, 'is_temporal_shift') and self.is_temporal_shift[index] == '1':  # run temporal shuffling
-            from ops.temporal_shift import TemporalShift
+            from scripts.temporal_shift import TemporalShift
             def wrapped_func(x, is_residual, n_segment, fold_div):
                 if is_residual:
                     x_shift = TemporalShift.shift(x, n_segment, fold_div=fold_div)

@@ -4,10 +4,10 @@ import time
 import torch.nn.parallel
 import torch.optim
 from sklearn.metrics import confusion_matrix
-from ops.dataset import TSNDataSet
-from ops.models import TSN
-from ops.transforms import *
-from ops import dataset_config
+from scripts.dataset import TSNDataSet
+from scripts.models import TSN
+from scripts.transforms import *
+from scripts import dataset_config
 from torch.nn import functional as F
 
 # options
@@ -125,7 +125,7 @@ for this_weights, this_test_segments, test_file in zip(weights_list, test_segmen
               )
 
     if 'tpool' in this_weights:
-        from ops.temporal_shift import make_temporal_pool
+        from scripts.temporal_shift import make_temporal_pool
         make_temporal_pool(net.base_model, this_test_segments)  # since DataParallel
 
     checkpoint = torch.load(this_weights)
